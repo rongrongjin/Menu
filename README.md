@@ -1,2 +1,2 @@
 # Menu
- Use can choose what they want to eat in their shopping cart
+ User can choose what they want to eat and add them to shopping cart
