@@ -2,6 +2,8 @@ import React from "react";
 import classes from "./AvailableMeals.module.css";
 import Card from "../UI/Card";
 import MealItem from "./MealItem/MealItem";
+import { useState, useEffect } from "react";
+import * as Realm from "realm-web";
 
 const DUMMY_MEALS = [
   {
@@ -31,7 +33,30 @@ const DUMMY_MEALS = [
 ];
 
 const AvailableMeals = () => {
-  const mealsList = DUMMY_MEALS.map((meal) => (
+  const [meal, setMeal] = useState([]);
+
+  async function realmUser() {
+    let app = new Realm.App({ id: "menu-jghnb" });
+    const credentials = Realm.Credentials.anonymous();
+
+    try {
+      let user = await app.logIn(credentials);
+
+      let result = user
+        .callFunction("getProduct")
+        .then((response) => console.log(response));
+
+      setMeal(result);
+    } catch (errors) {
+      console.log(errors);
+    }
+  }
+
+  useEffect(() => {
+    realmUser();
+  }, []);
+
+  const mealsList = meal.map((meal) => (
     <MealItem
       key={meal.id}
       id={meal.id}
